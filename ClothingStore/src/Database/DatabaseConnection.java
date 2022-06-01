@@ -1,4 +1,4 @@
-package Main;
+package Database;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,25 +16,20 @@ public class DatabaseConnection {
 	private static String url = "jdbc:sqlserver://DESKTOP-SIF0II9\\SQLEXPRESS;databaseName=ClothingStoreDB;encrypt=false;trustServerCertificate=true";
 	private static String user = "sa";
 	private static String pass = "123";
-	private static Connection conn;
+	static Connection conn;
 
-	public static void open() throws SQLException {
-		System.out.println("Connecting...");
-		conn = DriverManager.getConnection(url, user, pass);
-		System.out.println("Connected!");
+	public static void open() {
+		try {
+			System.out.println("Connecting...");
+			conn = DriverManager.getConnection(url, user, pass);
+			System.out.println("Connected!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void close() throws SQLException {
 		conn.close();
 	}
-	/*
-	 * public void ShowCustomers() throws SQLException { String query1 =
-	 * "INSERT INTO Product VALUES ('test','1','test')"; Statement stmt =
-	 * conn.createStatement();
-	 * 
-	 * 
-	 * ResultSet rs = stmt.executeQuery(query1);
-	 * 
-	 * while (rs.next()) { System.out.println(rs.getString("first_name")); } }
-	 */
 }
