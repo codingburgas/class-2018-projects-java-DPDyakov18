@@ -26,13 +26,16 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, UTF_8));
 		String link = sc.nextLine();
+		int id=sc.nextInt();
 		ScrapingFromOzone sfo = new ScrapingFromOzone();
 		DatabaseConnection dbc = new DatabaseConnection();
 		DatabaseQueries dbq = new DatabaseQueries();
 		Document doc;
 		dbc.open();
 		sfo.connectToWebSite(link);
-		dbq.insertProductListing(link);
+		//dbq.insertProductListing(link, id);
+		//dbq.selectProductListing(id);
+		//System.out.println("Rows affected: "+dbq.deleteProductListing(id));
 		DatabaseConnection.close();
 	}
 }
