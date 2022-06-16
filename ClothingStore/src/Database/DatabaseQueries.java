@@ -15,6 +15,7 @@ import Scraping.ScrapingFromOzone;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class DatabaseQueries {
+	int rowsAffected = 0;
 	public void insertProductListing(String link, int id) throws SQLException {
 		try {
 			String query = "INSERT INTO ProductListing(ProductListingId, ProductName, Link, Price) "
@@ -73,7 +74,6 @@ public class DatabaseQueries {
 		}
 	}
 	public int deleteProductListing(int id) throws SQLException {
-		int rowsAffected = 0;
 		try {
 			String query = "DELETE FROM ProductListing WHERE ProductListingId=?";
 			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
@@ -85,7 +85,6 @@ public class DatabaseQueries {
 		return rowsAffected;
 	}
 	public int deleteCategory(int id) throws SQLException {
-		int rowsAffected = 0;
 		try {
 			String query = "DELETE FROM Category WHERE CategoryId=?";
 			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
@@ -97,10 +96,49 @@ public class DatabaseQueries {
 		return rowsAffected;
 	}
 	public int deleteUser(int id) throws SQLException {
-		int rowsAffected = 0;
 		try {
 			String query = "DELETE FROM User WHERE UserId=?";
 			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
+			stmt.setInt(1, id);
+			rowsAffected=stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rowsAffected;
+	}
+	public int updateProductListing(int id, String ProductName, String link, String Price) throws SQLException {	
+		try {
+			String query = "UPDATE ProductListing SET ProductName=?, Link=?, Price=? WHERE ProductListingId=?";
+			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
+			stmt.setString(1, ProductName);
+			stmt.setString(2, link);
+			stmt.setString(3, Price);
+			stmt.setInt(4, id);
+			rowsAffected=stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rowsAffected;
+	}
+	public int updateCategory(int id, String Name) throws SQLException {
+		try {
+			String query = "UPDATE Category SET Name=? WHERE CategoryId=?";
+			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
+			stmt.setString(1, Name);
+			rowsAffected=stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rowsAffected;
+	}
+	public int updateUser(int id, String Username, String Address, String Email, String Password) throws SQLException {
+		try {
+			String query = "UPDATE User SET Username=?, Address=?, Email=?, Password=?, Role=? WHERE UserId=?";
+			PreparedStatement stmt = DatabaseConnection.open().prepareStatement(query);
+			stmt.setString(1, Username);
+			stmt.setString(1, Address);
+			stmt.setString(1, Email);
+			stmt.setString(1, Password);
 			stmt.setInt(1, id);
 			rowsAffected=stmt.executeUpdate();
 		} catch (SQLException e) {
