@@ -1,38 +1,39 @@
 package Scraping;
 
 import java.io.IOException;
-
+import java.util.Scanner;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class ScrapingFromOzone {
-	String leva = "";
-	String stotinki = "";
-	String price = "";
-	Document doc;
+	Scanner sc = new Scanner(System.in);
+	public static String leva = "";
+	public static String stotinki = "";
+	public static String price = "";
+	static Document doc;
+	public static String link;
+	String[] linkList;
 
-	public void connectToWebSite() {
+	public void connectToWebSite(String link) {
 		try {
-			doc = Jsoup.connect("https://www.ozone.bg/product/sony-playstation-5/").get();
+			this.link = link;
+			Jsoup.connect(link).get();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void getPrice() {
-		connectToWebSite();
-		// System.out.println("<span class=\"price\"
-		// id=\"product-price-403496\">".length());
-		// System.out.println("doc: " + doc.toString());
-		System.out.println("title: " + doc.title());
-
+	public static String getPrice() {
+		try {
+			doc = Jsoup.connect(link).get();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Elements links = doc.select("div.price-box").select("span.price");
 
 		Element link = links.get(1);
-		// System.out.println(link.select("span.price").toString());
 		price = link.toString().replaceAll("[^0-9]", "");
 		if (price.length() > 7) {
 			price = price.substring(6);
@@ -43,8 +44,14 @@ public class ScrapingFromOzone {
 			stotinki = price.substring(price.length() - 2);
 			leva = price.substring(0, price.length() - 2);
 		}
-		System.out.println(leva + "." + stotinki);
 		if (link.select("class").toString().equals("null")) {
 		}
+		price = leva + "." + stotinki;
+		return price;
+	}
+
+	public static String getProductName() {
+		String[] title = doc.title().toString().split("Ozone.bg");
+		return title[0];
 	}
 }

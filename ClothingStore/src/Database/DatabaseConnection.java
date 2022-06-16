@@ -18,15 +18,13 @@ public class DatabaseConnection {
 	private static String pass = "123";
 	static Connection conn;
 
-	public static void open() {
+	public static Connection open() {
 		try {
-			System.out.println("Connecting...");
 			conn = DriverManager.getConnection(url, user, pass);
-			System.out.println("Connected!");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		return conn;
 	}
 
 	public static void close() throws SQLException {
